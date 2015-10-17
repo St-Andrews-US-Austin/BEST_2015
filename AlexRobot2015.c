@@ -11,13 +11,13 @@
 float k1 = 1; //proportionality constant for relation of joystick and motor speed
 float k2 = 0;
 
-float currentAngle6 = 0;
-float currentAngle7 = 0;
+//float currentAngle6 = 0;
+float currentAngle7 = 127;
 float currentAngle8 = 0;
 float currentAngle9 = -127;
-float deltaAngle6 = 1; //how much the angle changes each iteration
-float deltaAngle7 = 1;
-int pause = 4;  // delay between iterations
+//float deltaAngle6 = 1; //how much the angle changes each iteration
+//float deltaAngle7 = 1;
+//int pause = 4;  // delay between iterations
 //ratio of deltaAngle & delay determines how fast the servo turns (50 degs/s right now)
 
 //increases the speed only when Btn5D is held down
@@ -40,8 +40,8 @@ void kValues()
 	*/
 	k2 = 1;
 }
-
-void servoPort6()  /* currently not used in 2015 */
+/*
+void servoPort6()  // currently not used in 2015
 {
 	motor[servoA] = currentAngle6;
 	if(vexRT[Btn8D] == 1 && currentAngle6 > -127 + deltaAngle6)
@@ -55,8 +55,10 @@ void servoPort6()  /* currently not used in 2015 */
 		sleep(pause);
 	}
 }
+*/
 
-void servoPort7() /* currently not used in 2015 */
+
+/*void servoPort7() // currently not used in 2015
 {
 	motor[servoB] = currentAngle7;
 	if(vexRT[Btn6D] == 1 && currentAngle7 > -127 + deltaAngle7)
@@ -70,8 +72,9 @@ void servoPort7() /* currently not used in 2015 */
 		sleep(pause);
 	}
 }
-/* collection bin release - must press both buttons to release the bin
-   or reset the bin release pin*/
+*/
+ //collection bin release - must press both buttons to release the bin
+ //  or reset the bin release pin
 void servoPort8(){
 	motor[servoC] = currentAngle8;
 	if(vexRT[Btn7U] == 1 && vexRT[Btn8U] == 1){
@@ -80,15 +83,26 @@ void servoPort8(){
 		currentAngle8 = 0;
 	}
 }
-/* blade sweeper servo (goes from 127 to -127 with buttons 5U and 5D) */
+/* blade right sweeper servo (goes from 127 to -127 with buttons 5U and 5D) */
+void servoPort7(){
+	motor[servoB] = currentAngle7;
+	if(vexRT[Btn8L] == 1 && currentAngle7 + 1 <= 127){
+		currentAngle7+= 5;
+	}else if(vexRT[Btn8R] == 1 && currentAngle7 - 1 >= -127){
+		currentAngle7-= 5;
+	}
+}
+
+/* blade left sweeper servo (goes from 127 to -127 with buttons 5U and 5D) */
 void servoPort9(){
 	motor[servoD] = currentAngle9;
-	if(vexRT[Btn5U] == 1 && currentAngle9 + 1 <= 127){
+	if(vexRT[Btn7L] == 1 && currentAngle9 + 1 <= 127){
 		currentAngle9+= 5;
-	}else if(vexRT[Btn5D] == 1 && currentAngle9 - 1 >= -127){
+	}else if(vexRT[Btn7R] == 1 && currentAngle9 - 1 >= -127){
 		currentAngle9-= 5;
 	}
 }
+
 void checkSensors()
 {
 	//if((SensorValue(boomMin) == 1 && vexRT[Ch3]<0) || (SensorValue(boomMax == 1) && vexRT[Ch3]>0))
@@ -120,10 +134,10 @@ task main()
 		}
 
 
-		servoPort6();
-		servoPort7();
+//		servoPort6();
+		servoPort7();  // right sweeper
 		servoPort8();
-		servoPort9();
+		servoPort9();  // left sweeper
 		kValues();
 		checkSensors();
 	}
