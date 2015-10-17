@@ -17,7 +17,7 @@ float currentAngle8 = 0;
 float currentAngle9 = -127;
 //float deltaAngle6 = 1; //how much the angle changes each iteration
 //float deltaAngle7 = 1;
-//int pause = 4;  // delay between iterations
+int pause = 4;  // delay between iterations
 //ratio of deltaAngle & delay determines how fast the servo turns (50 degs/s right now)
 
 //increases the speed only when Btn5D is held down
@@ -91,6 +91,7 @@ void servoPort7(){
 	}else if(vexRT[Btn8R] == 1 && currentAngle7 - 1 >= -127){
 		currentAngle7-= 5;
 	}
+	sleep(pause);  // slow down
 }
 
 /* blade left sweeper servo (goes from 127 to -127 with buttons 5U and 5D) */
@@ -101,6 +102,7 @@ void servoPort9(){
 	}else if(vexRT[Btn7R] == 1 && currentAngle9 - 1 >= -127){
 		currentAngle9-= 5;
 	}
+	sleep(pause);  // slow down the sweeper servo action
 }
 
 void checkSensors()
