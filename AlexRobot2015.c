@@ -10,6 +10,7 @@
 
 float k1 = 1; //proportionality constant for relation of joystick and motor speed
 float k2 = 0;
+float k3 = 1; // proportionally constant for scoop motor speed
 
 //float currentAngle6 = 0;
 float currentAngle7 = 127;
@@ -26,10 +27,15 @@ void kValues()
 {
 	k1 = 1;
 	k2 = 0;
-	if(vexRT[Btn5D] == 1)
+	k3 = 1;
+	if(vexRT[Btn5U] == 1)
 	{ //wheels are slowed down
 		k1 = 0.3;
 		k2 = 0;
+	}
+	if (vexRT[Btn5D] ==1)
+	{ // scoop motor is slowed down
+		k3 = 0.2;
 	}
 	/* -- Code to stop motors when pressing R
 	if(vexRT[Btn8R] == 1)
@@ -128,9 +134,9 @@ task main()
 		motor[rightMotor] = vexRT[Ch2]*k1;
 		//motor[boomMotor] = vexRT[Ch3]*k2;
 		if(vexRT[Btn6U] == 1){
-			motor[boomMotor] = -255;
+			motor[boomMotor] = -255*k3;
 		}else if(vexRT[Btn6D] == 1){
-			motor[boomMotor] = 255;
+			motor[boomMotor] = 255*k3;
 		}else{
 			motor[boomMotor] = 0;
 		}
